@@ -47,7 +47,7 @@ void bfs(int x,int c)   ///exploring node x and c is the current color which wil
              else
                  bfs(node,1);
         }
-       else if(color[node]!=c)   /// if node is already colored and color of node is not equal to the the current color
+       else if(color[node]!=c)   // if node is already colored and color of node is not equal to the current color
         {
             cycle_found=true;
             return;
