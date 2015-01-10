@@ -57,18 +57,19 @@ while(scanf("%s%s",s1,s2)==2)
 	}
 
 	vc.clear();
-
+	
+	/// finding lcs of s1 and s2 whose lengths are len1 and len2 respectively. 
 	 backtrace(dp,s1,s2,len1,len2); //getting LCS by backtracing
 	 //LCS is stored in the vector "vc"
 		
 	int l1=0,l2=0;	
 	int j=0;
 
-	while(!isalpha(vc[j]))  ///removing extra spaces
+	while(!isalpha(vc[j]))  ///removing extra leading spaces
 		++j;
 
 
-	///then printing SCS with the help of LCS 
+	///then printing SCS of s1 and s2 with the help of LCS of s1 and s2 
 	for(int i=j;i<vc.size();++i)
 	{
 	
