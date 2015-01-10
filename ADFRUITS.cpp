@@ -41,10 +41,10 @@ while(scanf("%s%s",s1,s2)==2)
 	int dp[105][105];
 	memset(dp,0,sizeof(dp));
 
-	for(int i=0;i<=len1;++i) dp[i][0] = 0;
-	for(int i=0;i<=len2;++i) dp[0][i] = 0;
+	for(int i=0;i<=len1;++i) dp[i][0] = 0;   //base cases
+	for(int i=0;i<=len2;++i) dp[0][i] = 0;	 //base cases
 
-// filling up dp[][] table
+// filling up dp[][] table for LCS
 	for(int i=1;i<=len1;++i)
 	{
 
@@ -59,14 +59,16 @@ while(scanf("%s%s",s1,s2)==2)
 	vc.clear();
 
 	 backtrace(dp,s1,s2,len1,len2); //getting LCS by backtracing
+	 //LCS is stored in the vector "vc"
 		
 	int l1=0,l2=0;	
 	int j=0;
 
-	while(!isalpha(vc[j]))
+	while(!isalpha(vc[j]))  ///removing extra spaces
 		++j;
 
 
+	///then printing SCS with the help of LCS 
 	for(int i=j;i<vc.size();++i)
 	{
 	
