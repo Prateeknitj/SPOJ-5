@@ -1,7 +1,8 @@
 /**
-Problem - HELPR2D2 from SPOJ
+Author: Shivam Mishra
+Problem: HELPR2D2 from SPOJ
 Data Structure: Segment tree
-
+Difficulty: Easy
 **/
 
 #include <iostream>
