@@ -1,3 +1,9 @@
+/**
+Author: Shivam Mishra
+Problem: KFSTD from SPOJ
+Data structure: Segment tree
+
+ **/
 #include <iostream>
 #include <stdio.h>
 #include <algorithm>
