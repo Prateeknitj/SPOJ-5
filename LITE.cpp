@@ -1,5 +1,5 @@
 /**
-Data Structure: Segment Tree
+Segment Tree with lazy propagation
 **/
 #include <iostream>
 #include <stdio.h>
@@ -58,31 +58,41 @@ struct data
 	
 	void assignleaf()
 	{
-		countoff=counton=lazy=0;
+		countoff=1;
+		counton=0;
+		lazy=0;
 	}
-	void assignleaf(int idx ,int val)
-	{
-		
-	}
-
+	
 	void combine(data &l, data &r)
 	{
-
 		countoff  = l.countoff + r.countoff;
-		counton = l.counton + r.counton;
-		
+		counton = l.counton + r.counton;		
 	}
 
-		
-	void update()
-	{
-		swap(countoff,counton);						
-	}
 
 
 };
 
 data tree[4*MAX+5];
+
+
+void refresh(int node,int a,int b)
+{
+
+	    if(tree[node].lazy)
+		{	
+			swap(tree[node].countoff,tree[node].counton);
+		
+			tree[2*node].lazy = 1 - tree[2*node].lazy ;
+			tree[2*node+1].lazy = 1 - tree[2*node+1].lazy;
+			
+			tree[node].lazy = 0;
+		}
+
+}
+
+
+
 
 void build_tree(int node,int s,int e)
 {
@@ -107,35 +117,50 @@ void build_tree(int node,int s,int e)
 int query(int node,int segs,int sege,int qs,int qe)
 {
 
+	//cout<<" q = node = " <<node<< " segs = "<<segs<< " sege = "<<sege<< " qs = "<<qs<<" qe = "<<qe<<endl;
+
+		if(segs>sege||segs>qe||sege<qs) return 0;
+
+		refresh(node,segs,sege);
+
+		if(segs>=qs && sege<= qe)
+		{
+			return tree[node].counton;
+		}
+		
+		int mid = segs+sege;  mid /= 2;
+		
+		return query(2*node,segs,mid,qs,qe) + query(2*node+1,mid+1,sege,qs,qe);
 
 }
 
 void update(int node,int segs,int sege,int qs,int qe)
 {
+	//cout<<" update -  node = " <<node<< " segs = "<<segs<< " sege = "<<sege<< " qs = "<<qs<<" qe = "<<qe<<endl;
+
 
 	if(segs>sege||segs>qe||sege<qs)
+	{	
+		refresh(node,segs,sege);
 		return;
-	
-	if(segs>=qs && sege<= qe)
-	{
-		tree[node].update();
 	}
+	if(segs>=qs && sege<= qe)		
+	{
+		tree[node].lazy = 1 - tree[node].lazy;
+		refresh(node,segs,sege);
+		return;
+	}
+	
+	
+	refresh(node,segs,sege);
 
 	int mid = segs+sege;  mid /= 2;
-
-
-	if(qe<=mid)
-		update(2*node,segs,mid,qs,qe);
-
-	if(qs>mid)
-		update(2*node+1,mid+1,sege,qs,qe);
-
-
+	
 	update(2*node,segs,mid,qs,qe);
 	update(2*node+1,mid+1,sege,qs,qe);
-
-
-	tree[node].combine(tree[2*node],tree[2*node+1]);	
+	
+	tree[node].combine(tree[2*node],tree[2*node+1]);
+		
 
 }
 
@@ -144,10 +169,17 @@ void update(int node,int segs,int sege,int qs,int qe)
 int main()
 {
 
-int n,m; INT(n); INT(m);
+int n,m; 
+
+INT(n); INT(m);
+
+build_tree(1,0,n-1);
+
+
 
 while(m--)
 {
+
 	int op,L,R;
 	INT(op); INT(L); INT(R);
 
@@ -159,9 +191,10 @@ while(m--)
 	{
 		update(1,0,n-1,L-1,R-1);
 	}
-	
+
 }
 
 
 return 0;
 }
+
